@@ -1,0 +1,88 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.camel.component.zookeepermaster.group;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadFactory;
+
+import org.apache.camel.CamelContext;
+import org.apache.camel.component.zookeepermaster.group.internal.ZooKeeperGroup;
+import org.apache.camel.component.zookeepermaster.group.internal.ZooKeeperMultiGroup;
+import org.apache.curator.framework.CuratorFramework;
+
+public class DefaultManagedGroupFactory implements ManagedGroupFactory {
+
+    private final CuratorFramework curator;
+    private final boolean shouldClose;
+    private final CamelContext camelContext;
+
+    public DefaultManagedGroupFactory(CuratorFramework curator, boolean shouldClose) {
+        this(curator, shouldClose, null);
+    }
+
+    public DefaultManagedGroupFactory(CuratorFramework curator, boolean shouldClose, CamelContext camelContext) {
+        this.curator = curator;
+        this.shouldClose = shouldClose;
+        this.camelContext = camelContext;
+    }
+
+    @Override
+    public CuratorFramework getCurator() {
+        return curator;
+    }
+
+    @Override
+    public <T extends NodeState> Group<T> createGroup(String path, Class<T> clazz) {
+        ExecutorService executorService = createExecutorService(path);
+        return new ZooKeeperGroup<>(curator, path, clazz, executorService);
+    }
+
+    @Override
+    public <T extends NodeState> Group<T> createGroup(String path, Class<T> clazz, ThreadFactory threadFactory) {
+        ExecutorService executorService = createExecutorService(path);
+        return new ZooKeeperGroup<>(curator, path, clazz, executorService);
+    }
+
+    @Override
+    public <T extends NodeState> Group<T> createMultiGroup(String path, Class<T> clazz) {
+        ExecutorService executorService = createExecutorService(path);
+        return new ZooKeeperMultiGroup<>(curator, path, clazz, executorService);
+    }
+
+    @Override
+    public <T extends NodeState> Group<T> createMultiGroup(String path, Class<T> clazz, ThreadFactory threadFactory) {
+        ExecutorService executorService = createExecutorService(path);
+        return new ZooKeeperMultiGroup<>(curator, path, clazz, executorService);
+    }
+
+    private ExecutorService createExecutorService(String path) {
+        if (camelContext == null) {
+            throw new IllegalStateException(
+                    "CamelContext is required to create ExecutorService for virtual threads support. "
+                                            + "Use the constructor that accepts CamelContext.");
+        }
+        return camelContext.getExecutorServiceManager()
+                .newSingleThreadExecutor(this, "ZooKeeperGroup-" + path);
+    }
+
+    @Override
+    public void close() {
+        if (shouldClose) {
+            curator.close();
+        }
+    }
+}
