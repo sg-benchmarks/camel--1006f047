@@ -20,7 +20,7 @@ __metadata:
     eslint: ^10.0.0
     eslint-config-standard: ^17.1.0
     eslint-plugin-import: ^2.32.0
-    eslint-plugin-n: ^17.23.2
+    eslint-plugin-n: ^18.0.1
     eslint-plugin-node: ^11.1.0
     eslint-plugin-promise: ^7.2.1
     gulp: ^5.0
@@ -1539,9 +1539,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-n@npm:^17.23.2":
-  version: 17.23.2
-  resolution: "eslint-plugin-n@npm:17.23.2"
+"eslint-plugin-n@npm:^18.0.1":
+  version: 18.0.1
+  resolution: "eslint-plugin-n@npm:18.0.1"
   dependencies:
     "@eslint-community/eslint-utils": ^4.5.0
     enhanced-resolve: ^5.17.1
@@ -1551,10 +1551,16 @@ __metadata:
     globrex: ^0.1.2
     ignore: ^5.3.2
     semver: ^7.6.3
-    ts-declaration-location: ^1.0.6
   peerDependencies:
-    eslint: ">=8.23.0"
-  checksum: 8897b5764f590209aca0033e86e712e9dfdff575c2c0492f66514a82052af1f8d0496f8bd87212588910ab98ad14bb5e40feddc0ec1b7a3c11c5edce28b718ae
+    eslint: ">=8.57.1"
+    ts-declaration-location: ^1.0.6
+    typescript: ">=5.0.0"
+  peerDependenciesMeta:
+    ts-declaration-location:
+      optional: true
+    typescript:
+      optional: true
+  checksum: 0546a5ef7c68a7ee13e5a8aa1e304d9540a5ed352a23cd3c9407d5bd39d6e02bb2ead316a6ddb2c948a08462d7138b00b1ef9e7a2f8c378389069bfed9679737
   languageName: node
   linkType: hard
 
@@ -3850,13 +3856,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"picomatch@npm:^4.0.2":
-  version: 4.0.2
-  resolution: "picomatch@npm:4.0.2"
-  checksum: a7a5188c954f82c6585720e9143297ccd0e35ad8072231608086ca950bee672d51b0ef676254af0788205e59bd4e4deb4e7708769226bed725bf13370a7d1464
-  languageName: node
-  linkType: hard
-
 "plugin-error@npm:^1.0.1":
   version: 1.0.1
   resolution: "plugin-error@npm:1.0.1"
@@ -4754,17 +4753,6 @@ __metadata:
   dependencies:
     streamx: ^2.12.5
   checksum: 404ad1a346babab53d75d3b4deb779916760fc9e605f4e64ec789366edf08e75ad592a262ca566e7864f77c03375151dcfac4744ff7fd52417cb2a2e9fc60795
-  languageName: node
-  linkType: hard
-
-"ts-declaration-location@npm:^1.0.6":
-  version: 1.0.7
-  resolution: "ts-declaration-location@npm:1.0.7"
-  dependencies:
-    picomatch: ^4.0.2
-  peerDependencies:
-    typescript: ">=4.0.0"
-  checksum: d1bfa610fae8175389af580f25e8aab5dd5c7fb8daf83560fa8d555da8ef03542dde8552a9c3d1fb4beaed8670db863083c61413846d91cb3e5caea6636e45f7
   languageName: node
   linkType: hard
 
